@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polttarit 5.–7.6.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,900;1,9..144,400&family=Inter+Tight:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a1520;
+    --bg-deep: #050b12;
+    --paper: #f5ede1;
+    --ink: #0a1520;
+    --gold: #d4a24c;
+    --gold-bright: #f0c674;
+    --ember: #c45a3a;
+    --sauna: #8a3a1f;
+    --water: #2a5a7a;
+    --mist: rgba(245, 237, 225, 0.08);
+    --line: rgba(212, 162, 76, 0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--paper);
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3rem 5vw 2rem;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 30%, rgba(212, 162, 76, 0.12), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 70%, rgba(196, 90, 58, 0.15), transparent 60%),
+      linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 100%);
+    overflow: hidden;
+  }
+
+  /* Stars / fireflies */
+  .stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .stars span {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--gold-bright);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--gold-bright);
+    animation: twinkle 3s infinite ease-in-out;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  .hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    z-index: 2;
+  }
+
+  .hero-top .left::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background: var(--gold);
+    margin-right: 1rem;
+    vertical-align: middle;
+  }
+
+  .hero-main {
+    z-index: 2;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(4rem, 14vw, 13rem);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    color: var(--paper);
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.4s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    font-weight: 900;
+    color: var(--gold-bright);
+  }
+
+  .hero-title .ampersand {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--ember);
+  }
+
+  .hero-subtitle {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    color: var(--paper);
+    opacity: 0.7;
+    max-width: 600px;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.6s forwards;
+  }
+
+  .hero-bottom {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    z-index: 2;
+    padding-top: 3rem;
+    border-top: 1px solid var(--line);
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.8s forwards;
+  }
+
+  .hero-stat {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .hero-stat .label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .hero-stat .value {
+    font-family: 'Fraunces', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--paper);
+    letter-spacing: -0.02em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Section base */
+  section {
+    padding: 8rem 5vw;
+    position: relative;
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    margin-bottom: 6rem;
+    align-items: end;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2rem;
+  }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .section-title em {
+    font-style: italic;
+    font-weight: 600;
+    color: var(--gold-bright);
+  }
+
+  /* Day labels */
+  .day {
+    margin-bottom: 6rem;
+  }
+
+  .day-label {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    font-family: 'Fraunces', serif;
+  }
+  .day-label .pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--gold);
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
+  }
+  .day-label .name {
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    color: var(--paper);
+  }
+  .day-label .line {
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 0;
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 140px 40px 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px dashed var(--line);
+    position: relative;
+    transition: background 0.3s ease;
+  }
+
+  .timeline-item:hover {
+    background: rgba(212, 162, 76, 0.03);
+  }
+
+  .timeline-item:last-child {
+    border-bottom: none;
+  }
+
+  .timeline-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    color: var(--gold);
+    padding-top: 0.3rem;
+    font-weight: 600;
+  }
+
+  .timeline-marker {
+    display: flex;
+    justify-content: center;
+    padding-top: 0.5rem;
+  }
+  .timeline-marker .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--gold);
+    position: relative;
+  }
+  .timeline-marker.special .dot {
+    background: var(--ember);
+    box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--ember), 0 0 20px var(--ember);
+  }
+
+  .timeline-content h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 1.6rem;
+    margin-bottom: 0.4rem;
+    color: var(--paper);
+    letter-spacing: -0.01em;
+  }
+
+  .timeline-content h3 em {
+    font-style: italic;
+    color: var(--gold-bright);
+  }
+
+  .timeline-content p {
+    color: rgba(245, 237, 225, 0.65);
+    font-size: 0.95rem;
+    max-width: 600px;
+  }
+
+  /* Rastit section */
+  .rastit-section {
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 50%, var(--bg) 100%);
+    position: relative;
+  }
+
+  .rastit-intro {
+    max-width: 700px;
+    margin-bottom: 4rem;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    font-weight: 300;
+    line-height: 1.4;
+    color: rgba(245, 237, 225, 0.8);
+  }
+
+  .rastit-intro::before {
+    content: '"';
+    font-size: 4rem;
+    color: var(--gold);
+    line-height: 0;
+    vertical-align: -0.4em;
+    margin-right: 0.5rem;
+    font-family: 'Fraunces', serif;
+  }
+
+  .rastit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  .rasti {
+    border: 1px solid var(--line);
+    padding: 2.5rem;
+    position: relative;
+    background: rgba(245, 237, 225, 0.02);
+    transition: all 0.4s ease;
+    overflow: hidden;
+  }
+
+  .rasti::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--ember));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease;
+  }
+
+  .rasti:hover {
+    background: rgba(245, 237, 225, 0.05);
+    border-color: var(--gold);
+    transform: translateY(-4px);
+  }
+
+  .rasti:hover::before {
+    transform: scaleX(1);
+  }
+
+  .rasti-num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 5rem;
+    line-height: 0.8;
+    color: var(--gold);
+    opacity: 0.4;
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+  }
+
+  .rasti-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .rasti h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .rasti h3 em {
+    font-style: italic;
+    color: var(--gold-bright);
+  }
+
+  .rasti p {
+    color: rgba(245, 237, 225, 0.7);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* Ohjelma section */
+  .ohjelmat-section {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .ohjelmat-section .section-title {
+    color: var(--ink);
+  }
+  .ohjelmat-section .section-title em {
+    color: var(--ember);
+  }
+  .ohjelmat-section .section-number {
+    color: var(--sauna);
+  }
+  .ohjelmat-section .section-header {
+    border-bottom-color: rgba(10, 21, 32, 0.15);
+  }
+
+  .ohjelma {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    gap: 4rem;
+    padding: 4rem 0;
+    border-bottom: 1px solid rgba(10, 21, 32, 0.1);
+    align-items: start;
+  }
+
+  .ohjelma:last-of-type {
+    border-bottom: none;
+  }
+
+  .ohjelma-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    color: var(--sauna);
+    text-transform: uppercase;
+  }
+  .ohjelma-time .big {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 4rem;
+    line-height: 0.9;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+    margin-top: 0.5rem;
+  }
+
+  .ohjelma-title h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 2.5rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+  .ohjelma-title h3 em {
+    font-style: italic;
+    color: var(--ember);
+  }
+  .ohjelma-title .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 1px solid var(--sauna);
+    color: var(--sauna);
+    padding: 0.3rem 0.7rem;
+    margin-top: 0.5rem;
+  }
+
+  .ohjelma-desc p {
+    font-size: 1rem;
+    color: rgba(10, 21, 32, 0.75);
+    margin-bottom: 1rem;
+  }
+  .ohjelma-desc ul {
+    list-style: none;
+    padding: 0;
+  }
+  .ohjelma-desc li {
+    padding-left: 1.5rem;
+    position: relative;
+    margin-bottom: 0.6rem;
+    font-size: 0.95rem;
+    color: rgba(10, 21, 32, 0.7);
+  }
+  .ohjelma-desc li::before {
+    content: '↳';
+    position: absolute;
+    left: 0;
+    color: var(--ember);
+    font-family: 'Fraunces', serif;
+  }
+
+  /* Käytäntö */
+  .kaytanto-section {
+    background: var(--bg-deep);
+    padding: 6rem 5vw;
+  }
+
+  .kaytanto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 4rem;
+  }
+
+  .kaytanto-item {
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--line);
+  }
+  .kaytanto-item .icon {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 2.5rem;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    display: block;
+    line-height: 1;
+  }
+  .kaytanto-item h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--paper);
+  }
+  .kaytanto-item p {
+    font-size: 0.9rem;
+    color: rgba(245, 237, 225, 0.6);
+  }
+
+  /* Footer */
+  footer {
+    padding: 4rem 5vw 3rem;
+    background: var(--bg-deep);
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+
+  footer .signature {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 2.5rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  footer .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    color: rgba(245, 237, 225, 0.4);
+    text-transform: uppercase;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .hero {
+      padding: 2rem 1.5rem;
+    }
+    .hero-bottom {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    section {
+      padding: 4rem 1.5rem;
+    }
+    .section-header {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .timeline-item {
+      grid-template-columns: 80px 20px 1fr;
+      gap: 1rem;
+    }
+    .timeline-time { font-size: 0.85rem; }
+    .timeline-content h3 { font-size: 1.3rem; }
+    .ohjelma {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 2.5rem 0;
+    }
+    .ohjelma-title h3 { font-size: 1.8rem; }
+    .day-label {
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+  }
+
+  /* Print */
+  @media print {
+    body { background: white; color: black; }
+    .stars { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="stars" id="stars"></div>
+
+  <div class="hero-top">
+    <div class="left">Polttarit · MMXXVI · Sumiaisten rannassa</div>
+    <div class="right">5.6 — 7.6 · JKL → Sumiainen</div>
+  </div>
+
+  <div class="hero-main">
+    <div class="hero-eyebrow">— Sankarille omistettu viikonloppu</div>
+    <h1 class="hero-title">
+      Viimeinen<br>
+      <em>villi</em> <span class="ampersand">&amp;</span><br>
+      vapaa
+    </h1>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="hero-stat">
+      <div class="label">Päivämäärä</div>
+      <div class="value">5.—7.6.</div>
+    </div>
+    <div class="hero-stat">
+      <div class="label">Sankari</div>
+      <div class="value">Julle</div>
+    </div>
+    <div class="hero-stat">
+      <div class="label">Paikka</div>
+      <div class="value">Mökki / Sumiainen</div>
+    </div>
+  </div>
+</header>
+
+<!-- AIKATAULU -->
+<section class="aikataulu-section">
+  <div class="section-header">
+    <div class="section-number">/ 01 — Aikataulu</div>
+    <h2 class="section-title">Kolme päivää, <em>jotka muistetaan</em> (ehkä 😜).</h2>
+  </div>
+
+  <!-- PERJANTAI -->
+  <div class="day">
+    <div class="day-label">
+      <span class="pill">Perjantai 5.6.</span>
+      <span class="name">— sankari nappaillaan</span>
+      <span class="line"></span>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-time">12:00</div>
+        <div class="timeline-marker special"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Poiminta <em>Jyväskylästä</em></h3>
+          <p>Sankari kyyditään peitellysti, ilman ennakkovaroitusta. Silmät peittoon heti autoon — yllätys on osa hommaa.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">13:15</div>
+        <div class="timeline-marker"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Pudotus <em>Sumiaisille</em></h3>
+          <p>Side pois vasta perillä. Noin 2–4 km päähän mökiltä.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">13:15 — 15:00</div>
+        <div class="timeline-marker special"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Eräilyrastit <em>mökille</em></h3>
+          <p>Muutama eräilyrasti matkalla.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">15:00 — 16:00</div>
+        <div class="timeline-marker"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Saapuminen <em>mökille</em></h3>
+          <p>Sankari kävelee viimeisen matkan pihaan. Ensimmäinen kunnon olut käteen. Naposteltavaa tarjolla.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">16:00 — 18:00</div>
+        <div class="timeline-marker"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Alkumaljat &amp; <em>vapaata</em></h3>
+          <p>Vapaata seurustelua pihalla, oluet rantakivellä, tarinat reitiltä.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">18:00 — 20:00</div>
+        <div class="timeline-marker special"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Sauna lämpenee</h3>
+          <p>Ensimmäiset löylyt, uintia järvessä, oluet ja seurustelua rannassa.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">20:00 — 22:00</div>
+        <div class="timeline-marker"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Ruokailu</h3>
+          <p>Iltapala / grilliruokaa. Roast-puheita ruoan ohessa — jokainen pitää 1–2 min puheen sankarista.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">22:00 →</div>
+        <div class="timeline-marker special"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Sauna, <em>viinaa</em>, ilta</h3>
+          <p>Sauna, palju, uinti, karaoke ja vapaata sekoilua.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAUANTAI -->
+  <div class="day">
+    <div class="day-label">
+      <span class="pill">Lauantai 6.6.</span>
+      <span class="name">— pääpäivä</span>
+      <span class="line"></span>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-time">11:00</div>
+        <div class="timeline-marker"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Aamupala &amp; <em>aamusauna</em></h3>
+          <p>Hiljainen aloitus. Kahvia, munakasta, makkaraa. Löylyt krapulalle.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">12:30</div>
+        <div class="timeline-marker special"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Ohjelma 1 — <em>Ilmakivääri TST-rata</em></h3>
+          <p>Polttarisankarin hyökkäysammunnat. Koko porukalle ampumiskilpailu.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">14:30</div>
+        <div class="timeline-marker special"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Ohjelma 2 — <em>Mölkky-turnaus</em></h3>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">16:00</div>
+        <div class="timeline-marker"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Kevyt ruokailu</h3>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">17:30</div>
+        <div class="timeline-marker special"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Ohjelma 3 — <em>Biisi &amp; puhe</em></h3>
+          <p>Sulhanen kirjoittaa biisin ja esittää sen porukalle. Lisäksi polttarisankarin puhe.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">19:00</div>
+        <div class="timeline-marker"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Vapaata hommaa</h3>
+          <p>Sauna, uinti, kalastus, korttipelit, oluet rantakivellä.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">21:00</div>
+        <div class="timeline-marker special"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Grilli</h3>
+          <p>Pihvit, makkarat, perunat. Iltaruoka rantanuotion äärellä.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">22:30 →</div>
+        <div class="timeline-marker special"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Sauna &amp; <em>vapaa ilta</em></h3>
+          <p>Sauna, palju, uinti, karaoke ja vapaata sekoilua.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUNNUNTAI -->
+  <div class="day">
+    <div class="day-label">
+      <span class="pill">Sunnuntai 7.6.</span>
+      <span class="name">— hiljainen päätös</span>
+      <span class="line"></span>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-time">11:00</div>
+        <div class="timeline-marker"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Aamupala &amp; <em>aamusauna</em></h3>
+          <p>Pekoni, kananmunat, kahvi. Viimeiset löylyt ennen kotiinlähtöä.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">13:00</div>
+        <div class="timeline-marker special"><div class="dot"></div></div>
+        <div class="timeline-content">
+          <h3>Kotiin <em>lähtö</em></h3>
+          <p>Mökki siistiksi, ajokunnon odottelua ja kotiin!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OHJEET VIERAILLE -->
+<section class="ohjeet-section">
+  <div class="section-header">
+    <div class="section-number">/ 02 — Ohjeet vieraille</div>
+    <h2 class="section-title">Mitä <em>pitää tietää</em>.</h2>
+  </div>
+
+  <div class="ohjeet-grid">
+    <div class="ohje-kortti ohje-paikka">
+      <div class="ohje-label">— Paikka</div>
+      <h3>Leiriniementie 180<br><em>Sumiainen</em></h3>
+      <p class="postinro">44280</p>
+      <a class="ohje-link" href="https://www.google.com/maps/search/?api=1&query=Leiriniementie+180+44280+Sumiainen" target="_blank" rel="noopener">Avaa kartalla →</a>
+    </div>
+
+    <div class="ohje-kortti">
+      <div class="ohje-label">— Saapuminen</div>
+      <h3>Klo <em>14:00</em> mennessä</h3>
+      <p>Julle vaeltaa mökille hieman tämän jälkeen — halutaan komitea ottamassa sankari vastaan! Saa tulla jo 12:00 alkaen tai kun ehtii. 👍</p>
+    </div>
+
+    <div class="ohje-kortti">
+      <div class="ohje-label">— Ruoka &amp; juoma</div>
+      <h3>Kaikki <em>hoidossa</em></h3>
+      <p>Ruoka- ja juomapuoli on järjestetty, alkoholit mukaan lukien. Omat lempijuomat voi poimia mukaan.</p>
+    </div>
+
+    <div class="ohje-kortti">
+      <div class="ohje-label">— Pakkauslista</div>
+      <h3>Mukaan</h3>
+      <ul class="pakkaus-lista">
+        <li>Makuupussi / lakanat</li>
+        <li>Pyyhe</li>
+        <li>Hyttyssuojaus</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ohjeet-section {
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+  }
+
+  .ohjeet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .ohje-kortti {
+    border: 1px solid var(--line);
+    padding: 2.5rem;
+    background: rgba(245, 237, 225, 0.02);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ohje-kortti::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--ember));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease;
+  }
+
+  .ohje-kortti:hover {
+    background: rgba(245, 237, 225, 0.05);
+    border-color: var(--gold);
+    transform: translateY(-4px);
+  }
+
+  .ohje-kortti:hover::before {
+    transform: scaleX(1);
+  }
+
+  .ohje-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .ohje-kortti h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 1.8rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.2rem;
+    color: var(--paper);
+  }
+
+  .ohje-kortti h3 em {
+    font-style: italic;
+    color: var(--gold-bright);
+  }
+
+  .ohje-kortti p {
+    color: rgba(245, 237, 225, 0.7);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .ohje-kortti .postinro {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 1.5rem;
+  }
+
+  .ohje-link {
+    display: inline-block;
+    margin-top: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    color: var(--gold-bright);
+    text-decoration: none;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 0.3rem;
+    transition: all 0.3s ease;
+  }
+
+  .ohje-link:hover {
+    color: var(--ember);
+    border-color: var(--ember);
+  }
+
+  .pakkaus-lista {
+    list-style: none;
+    padding: 0;
+  }
+
+  .pakkaus-lista li {
+    padding-left: 1.5rem;
+    position: relative;
+    margin-bottom: 0.7rem;
+    font-size: 1rem;
+    color: rgba(245, 237, 225, 0.85);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+  }
+
+  .pakkaus-lista li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  @media (max-width: 768px) {
+    .ohje-kortti { padding: 2rem; }
+    .ohje-kortti h3 { font-size: 1.5rem; }
+  }
+</style>
+
+<footer>
+  <div class="signature">Skål, Julle.</div>
+  <div class="meta">5.—7. kesäkuuta · MMXXVI · Sumiainen</div>
+</footer>
+
+<script>
+  // Generate stars
+  const stars = document.getElementById('stars');
+  for (let i = 0; i < 40; i++) {
+    const s = document.createElement('span');
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = Math.random() * 3 + 's';
+    s.style.animationDuration = (2 + Math.random() * 3) + 's';
+    stars.appendChild(s);
+  }
+</script>
+
+</body>
+</html>
